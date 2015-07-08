@@ -35,8 +35,10 @@ router.post('/search', function(req, res, next) {
       words.forEach(function(word) {
         stats[word] = stats[word] || 0;
 
-        if (tweetText.match(word.toLowerCase())) {
-          stats[word]++
+        var r = new RegExp(word, 'gi');
+        var matches = tweetText.match(r);
+        if (matches) {
+          stats[word] = matches.length;
         }
       });
 
