@@ -22,28 +22,28 @@ router.post('/tweet', function(req, res, next) {
 });
 
 router.post('/search', function(req, res, next) {
-  var words = req.body.words.split(" ");
+  var words = req.body.words.toLowerCase().split(" ");
 
   client.get('search/tweets', { q: words.join(" OR "), count: 100 }, function(error, tweets, response){
-    if (!error) {
-      var stats = {}, tweetText = "";
+    if (error) {
+      console.error(error);
+      res.status(500);
+    }
 
-      tweets.statuses.forEach(function(tweet) {
-        tweetText += " " + tweet.text.toLowerCase();
-      });
+    var stats = {}, oneTweetWords, lowerCaseWord, users = {};
 
-      words.forEach(function(word) {
-        stats[word] = stats[word] || 0;
-
-        var r = new RegExp(word, 'gi');
-        var matches = tweetText.match(r);
-        if (matches) {
-          stats[word] = matches.length;
+    tweets.statuses.forEach(function(tweet) {
+      oneTweetWords = tweet.text.toLowerCase().split(" ");
+      oneTweetWords.forEach(function(word) {
+        lowerCaseWord = word.toLowerCase();
+        if (words.indexOf(lowerCaseWord) >= 0) {
+          stats[word] = stats[word] || 0;
+          stats[word]++;
         }
       });
+    });
 
-      res.json(stats);
-    }
+    res.json({ stats: stats, users: users });
   });
 
 });
