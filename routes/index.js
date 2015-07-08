@@ -26,17 +26,18 @@ router.post('/search', function(req, res, next) {
 
   client.get('search/tweets', { q: words.join(" OR "), count: 100 }, function(error, tweets, response){
     if (!error) {
-      var stats = {}, tweetText;
+      var stats = {}, tweetText = "";
 
       tweets.statuses.forEach(function(tweet) {
-        tweetText = tweet.text.toLowerCase();
-        words.forEach(function(word) {
-          stats[word] = stats[word] || 0;
+        tweetText += " " + tweet.text.toLowerCase();
+      });
 
-          if (tweetText.match(word.toLowerCase())) {
-            stats[word]++
-          }
-        });
+      words.forEach(function(word) {
+        stats[word] = stats[word] || 0;
+
+        if (tweetText.match(word.toLowerCase())) {
+          stats[word]++
+        }
       });
 
       res.json(stats);
