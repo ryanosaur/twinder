@@ -57,4 +57,19 @@ router.post('/search', function(req, res, next) {
 
 });
 
+router.post('/follow', function(req, res, next) {
+  var client = twitterClient(req.body);
+
+  client.post('friendships/create', { screen_name: req.body.screen_name }, function(error, user, response){
+    if (error) {
+      console.error(error);
+      res.status(500);
+      return;
+    }
+
+    res.json(user);
+  });
+
+});
+
 module.exports = router;
