@@ -16,25 +16,20 @@ function twitterClient(params) {
 };
 
 router.post('/tweet', function(req, res, next) {
-  console.log(req.body);
   var client = twitterClient(req.body);
-  console.log(client);
 
   client.post('statuses/update', { status: req.body.tweet }, function(error, tweets, response){
-    console.log(error);
-    if (!error) {
-      res.json(tweets);
-      return;
+    if (error) {
+      console.error(error);
+      res.status(500);
     }
 
-    res.status(500);
+    res.json(tweets);
   });
 });
 
 router.post('/search', function(req, res, next) {
-  console.log(req.body);
   var client = twitterClient(req.body);
-
   var words = req.body.words.toLowerCase().split(" ");
 
   client.get('search/tweets', { q: words.join(" OR "), count: 100 }, function(error, tweets, response){
@@ -52,6 +47,7 @@ router.post('/search', function(req, res, next) {
         if (words.indexOf(lowerCaseWord) >= 0) {
           stats[word] = stats[word] || 0;
           stats[word]++;
+          users[tweet.user.screen_name] = tweet.user;
         }
       });
     });
