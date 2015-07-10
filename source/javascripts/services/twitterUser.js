@@ -10,18 +10,31 @@ angular.module('sif')
   }
 
   this.search = function(words) {
-    var data = withTokens({ words: words });
+    var data = withTokens({
+      words: words
+    });
     return $http.post(urls.apiUrl + "/search", data);
   };
 
   this.sendTweet = function(tweet) {
-    var data = withTokens({ tweet: tweet });
+    var data = withTokens({
+      tweet: tweet
+    });
     return $http.post(urls.apiUrl + "/tweet", data);
   };
 
   this.follow = function(screenName) {
-    var data = withTokens({ screen_name: screenName });
+    var data = withTokens({
+      screen_name: screenName
+    });
     return $http.post(urls.apiUrl + "/follow", data);
   };
+
+  this.ignore = function(screenName) {
+    var data = withTokens({
+      screen_name: screenName
+    });
+    return $http.post(urls.apiUrl + "/ignore", data);
+  }
 
 });

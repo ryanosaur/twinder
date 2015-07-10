@@ -1,4 +1,3 @@
-
 <div ng-controller="mainCtrl" class="tags-controller">
   <h1 class="text-center">#Cloud</h1>
   <form ng-submit="search()">
@@ -21,8 +20,11 @@
       </label>
     </div>
     <div ng-repeat="(screenName, userData) in data.users | friendsFilter : showFriends" class="media">
-      <div class="media-left"><a target="_blank" href="http://twitter.com/{{userData.screen_name}}"><img ng-src="{{userData.profile_image_url}}" class="media-object"></a></div>
+      <div class="media-left">
+        <a target="_blank" href="http://twitter.com/{{userData.screen_name}}"><img ng-src="{{userData.profile_image_url}}" class="media-object"></a>
+      </div>
       <div class="media-body">
+        <button ng-hide="false" ng-click="ignore(screenName)" class="btn btn-danger btn-xs pull-right">Ignore</button>
         <button ng-hide="userData.following" ng-click="follow(screenName)" ng-style="btnStyle(userData.ratio)" class="btn btn-info btn-xs pull-right">Follow</button>
         <button disabled ng-show="userData.following" class="btn btn-default btn-xs pull-right disabled">Following</button>
         <h4 class="media-heading">{{userData.name}}</h4>

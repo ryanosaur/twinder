@@ -33,9 +33,7 @@ angular.module('sif')
 
   $scope.btnStyle = function(ratio) {
     var greenScale = Math.floor(125 * ratio);
-    return {
-      'background-color': 'rgb(0,' + greenScale + ',0)'
-    };
+    return { 'background-color': 'rgb(0,' + greenScale + ',0)' };
   };
 
   $scope.follow = function(screenName) {
@@ -43,18 +41,6 @@ angular.module('sif')
     .success(function(data) {
       console.log(data);
       $scope.data.users[screenName].following = true;
-    })
-    .catch(function(error) {
-      console.log(error);
-    });
-
-    return false;
-  };
-
-  $scope.ignore = function(screenName) {
-    twitterUser.ignore(screenName)
-    .success(function(data) {
-      console.log(data);
     })
     .catch(function(error) {
       console.log(error);
@@ -160,31 +146,18 @@ angular.module('sif')
   }
 
   this.search = function(words) {
-    var data = withTokens({
-      words: words
-    });
+    var data = withTokens({ words: words });
     return $http.post(urls.apiUrl + "/search", data);
   };
 
   this.sendTweet = function(tweet) {
-    var data = withTokens({
-      tweet: tweet
-    });
+    var data = withTokens({ tweet: tweet });
     return $http.post(urls.apiUrl + "/tweet", data);
   };
 
   this.follow = function(screenName) {
-    var data = withTokens({
-      screen_name: screenName
-    });
+    var data = withTokens({ screen_name: screenName });
     return $http.post(urls.apiUrl + "/follow", data);
   };
-
-  this.ignore = function(screenName) {
-    var data = withTokens({
-      screen_name: screenName
-    });
-    return $http.post(urls.apiUrl + "/ignore", data);
-  }
 
 });

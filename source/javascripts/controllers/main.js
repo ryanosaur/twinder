@@ -7,7 +7,9 @@ angular.module('sif')
 
   $scope.btnStyle = function(ratio) {
     var greenScale = Math.floor(125 * ratio);
-    return { 'background-color': 'rgb(0,' + greenScale + ',0)' };
+    return {
+      'background-color': 'rgb(0,' + greenScale + ',0)'
+    };
   };
 
   $scope.follow = function(screenName) {
@@ -15,6 +17,18 @@ angular.module('sif')
     .success(function(data) {
       console.log(data);
       $scope.data.users[screenName].following = true;
+    })
+    .catch(function(error) {
+      console.log(error);
+    });
+
+    return false;
+  };
+
+  $scope.ignore = function(screenName) {
+    twitterUser.ignore(screenName)
+    .success(function(data) {
+      console.log(data);
     })
     .catch(function(error) {
       console.log(error);
