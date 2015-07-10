@@ -22,6 +22,7 @@ router.post('/tweet', function(req, res, next) {
     if (error) {
       console.error(error);
       res.status(500);
+      return;
     }
 
     res.json(tweets);
@@ -36,6 +37,7 @@ router.post('/search', function(req, res, next) {
     if (error) {
       console.error(error);
       res.status(500);
+      return;
     }
 
     var stats = {}, oneTweetWords, lowerCaseWord, users = {};
@@ -47,6 +49,8 @@ router.post('/search', function(req, res, next) {
         if (words.indexOf(lowerCaseWord) >= 0) {
           stats[word] = stats[word] || 0;
           stats[word]++;
+          var ratio = tweet.user.friends_count/tweet.user.followers_count;
+          tweet.user.ratio = ratio > 1 ? 1.0/ratio : ratio;
           users[tweet.user.screen_name] = tweet.user;
         }
       });
