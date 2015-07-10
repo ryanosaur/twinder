@@ -1,6 +1,14 @@
 var express = require('express');
 var Twitter = require("twitter");
+var mongoose = require('mongoose');
 var router = express.Router();
+
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mob');
+
+var Loser = mongoose.model("Loser", {
+  screen_name: { type: String, required: true },
+  createdAt: { type: Date, default: Date.now }
+});
 
 function twitterClient(params) {
   return new Twitter({
@@ -10,6 +18,33 @@ function twitterClient(params) {
     access_token_secret: params.access_token_secret
   });
 };
+
+Loser.on('index', function(err) {
+  if (err) {
+    console.error(err);
+  }
+});
+
+router.post('/ignore', function(req, res, next){
+  var newLoser = new Loser(req.body);
+  newLoser.save(function(err, savedLoser) {
+    if (err) {
+      console.log(err);
+      res.status(400).json({ error: "Validation Failed" });
+    }
+    console.log("savedLoser:", savedLoser);
+    res.json(savedLoser);
+  });
+});
+
+router.get('/ignore', function(req, res, next){
+  Loser.find({}).exec(function(err, losers){
+    if(err){
+      console.log(err);
+    }
+    res.json(losers);
+  });
+});
 
 router.post('/tweet', function(req, res, next) {
   var client = twitterClient(req.body);
