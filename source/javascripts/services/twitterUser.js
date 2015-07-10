@@ -30,6 +30,10 @@ angular.module('sif')
     return $http.post(urls.apiUrl + "/follow", data);
   };
 
+  this.getIgnoreList = function() {
+    return $http.get(urls.apiUrl + "/ignore");
+  }
+
   this.ignore = function(screenName) {
     var data = withTokens({
       screen_name: screenName

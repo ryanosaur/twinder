@@ -29,7 +29,17 @@ angular.module('sif')
 angular.module('sif')
 .controller("mainCtrl", function($scope, twitterUser) {
   $scope.tags = [];
+  $scope.ignored = [];
   $scope.tweet = "";
+
+  twitterUser.getIgnoreList()
+  .success(function(ignored) {
+    console.log(ignored);
+    $scope.ignored = ignored;
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 
   $scope.btnStyle = function(ratio) {
     var greenScale = Math.floor(125 * ratio);
@@ -54,7 +64,7 @@ angular.module('sif')
   $scope.ignore = function(screenName) {
     twitterUser.ignore(screenName)
     .success(function(data) {
-      console.log(data);
+      $scope.ignored.push(data.screen_name);
     })
     .catch(function(error) {
       console.log(error);
@@ -113,6 +123,22 @@ angular.module('sif')
     var filteredUsers = {};
     angular.forEach(users, function(userData, screenName) {
       if (!userData.following) {
+        filteredUsers[screenName] = userData;
+      }
+    });
+    return filteredUsers;
+  };
+});
+
+
+'use strict';
+
+angular.module('sif')
+.filter('ignoreFilter', function() {
+  return function(users, ignored) {
+    var filteredUsers = {};
+    angular.forEach(users, function(userData, screenName) {
+      if (ignored.indexOf(screenName) === -1) {
         filteredUsers[screenName] = userData;
       }
     });
@@ -179,6 +205,10 @@ angular.module('sif')
     });
     return $http.post(urls.apiUrl + "/follow", data);
   };
+
+  this.getIgnoreList = function() {
+    return $http.get(urls.apiUrl + "/ignore");
+  }
 
   this.ignore = function(screenName) {
     var data = withTokens({

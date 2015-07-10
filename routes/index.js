@@ -3,7 +3,7 @@ var Twitter = require("twitter");
 var mongoose = require('mongoose');
 var router = express.Router();
 
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/mob');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/twinder');
 
 var Loser = mongoose.model("Loser", {
   screen_name: { type: String, required: true },
@@ -42,7 +42,10 @@ router.get('/ignore', function(req, res, next){
     if(err){
       console.log(err);
     }
-    res.json(losers);
+    var ignored = losers.map(function(loser){
+      return loser.screen_name;
+    });
+    res.json(ignored);
   });
 });
 

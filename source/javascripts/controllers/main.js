@@ -3,7 +3,17 @@
 angular.module('sif')
 .controller("mainCtrl", function($scope, twitterUser) {
   $scope.tags = [];
+  $scope.ignored = [];
   $scope.tweet = "";
+
+  twitterUser.getIgnoreList()
+  .success(function(ignored) {
+    console.log(ignored);
+    $scope.ignored = ignored;
+  })
+  .catch(function(error) {
+    console.log(error);
+  });
 
   $scope.btnStyle = function(ratio) {
     var greenScale = Math.floor(125 * ratio);
@@ -28,7 +38,7 @@ angular.module('sif')
   $scope.ignore = function(screenName) {
     twitterUser.ignore(screenName)
     .success(function(data) {
-      console.log(data);
+      $scope.ignored.push(data.screen_name);
     })
     .catch(function(error) {
       console.log(error);

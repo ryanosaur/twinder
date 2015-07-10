@@ -19,7 +19,7 @@
         <input type="checkbox" ng-model="showFriends">Show Friends
       </label>
     </div>
-    <div ng-repeat="(screenName, userData) in data.users | friendsFilter : showFriends" class="media">
+    <div ng-repeat="(screenName, userData) in data.users | friendsFilter : showFriends | ignoreFilter : ignored" class="media">
       <div class="media-left">
         <a target="_blank" href="http://twitter.com/{{userData.screen_name}}"><img ng-src="{{userData.profile_image_url}}" class="media-object"></a>
       </div>
