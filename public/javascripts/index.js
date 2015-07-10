@@ -1,6 +1,6 @@
 'use strict';
 
-var app = angular.module('sif', ['firebase', 'ui.router']);
+var app = angular.module('sif', ['ui.router']);
 
 app.filter('friendsFilter', function() {
   return function(users, showFriends) {
@@ -101,7 +101,7 @@ angular.module('sif')
 angular.module('sif')
 .config(function($stateProvider, $urlRouterProvider){
   $urlRouterProvider.otherwise('/');
-    
+
   $stateProvider
   .state('home', {url: '/', templateUrl: '/views/home/home.html'})
   .state('user', {url: '', templateUrl: '/views/users/user.html', abstract: true})
@@ -127,29 +127,29 @@ angular.module('sif')
 'use strict';
 
 angular.module('sif')
-.service('FBService', function($window, $firebaseAuth, urls){
-  var fb = this;
+// .service('FBService', function($window, $firebaseAuth, urls){
+//   var fb = this;
 
-  this.db = new Firebase(urls.firebaseUrl);
+//   this.db = new Firebase(urls.firebaseUrl);
 
-  this.db.onAuth(function(authData) {
-    if (authData) {
-      fb.currentUser = authData.twitter;
-      console.log("Logged in: ", authData);
-    }
-  });
+//   this.db.onAuth(function(authData) {
+//     if (authData) {
+//       fb.currentUser = authData.twitter;
+//       console.log("Logged in: ", authData);
+//     }
+//   });
 
-  this.twitterLogout = function() {
-    fb.db.unauth();
-  };
+//   this.twitterLogout = function() {
+//     fb.db.unauth();
+//   };
 
-  this.twitterLogin = function() {
-    fb.db.authWithOAuthRedirect("twitter", function(error) {
-      if (error) {
-        console.log("Login Failed!", error);
-      }
-    });
-  };
+//   this.twitterLogin = function() {
+//     fb.db.authWithOAuthRedirect("twitter", function(error) {
+//       if (error) {
+//         console.log("Login Failed!", error);
+//       }
+//     });
+//   };
 
 });
 
@@ -175,9 +175,9 @@ angular.module('sif')
 angular.module('sif')
 .controller('UsersCtrl', function($scope, $state){
   console.log('user ctrl online');
-  
+
   $scope.name = $state.current.name.split('.')[1];
-  
+
   $scope.submit = function(user){
     console.log(user);
   };

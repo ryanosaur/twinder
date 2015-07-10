@@ -2,10 +2,6 @@ var express = require('express');
 var Twitter = require("twitter");
 var router = express.Router();
 
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
-});
-
 function twitterClient(params) {
   return new Twitter({
     consumer_key: process.env.CONSUMER_KEY,
